@@ -156,6 +156,20 @@ export default function Layout({ children }) {
             >
               Contact
             </Link>
+            <Link
+              to="/github"
+              className={`transition-colors ${
+                location.pathname === "/github"
+                  ? isDark
+                    ? "text-purple-400"
+                    : "text-purple-600"
+                  : isDark
+                  ? "text-gray-300 hover:text-white"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              GitHub
+            </Link>
 
             <Button
               variant="ghost"

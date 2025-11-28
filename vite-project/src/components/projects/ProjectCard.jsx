@@ -71,6 +71,7 @@ export default function ProjectCard({
               src={project.image_url}
               alt={project.title || "Project image"}
               className="w-full h-full object-cover rounded-lg"
+              loading="lazy"
             />
           ) : (
             <div className="text-center">

@@ -17,6 +17,7 @@ export const defaultProjects = [
     github_url: "https://github.com/Clawzd/FlyingStars",
     tags: ["Game Dev"],
     category: "recent",
+    level: "Beginner",
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ export const defaultProjects = [
     github_url: "https://github.com/Clawzd/TREASURE-QUEST",
     tags: ["Game Dev"],
     category: "recent",
+    level: "Intermediate",
   },
   {
     id: 3,
@@ -39,6 +41,7 @@ export const defaultProjects = [
     github_url: "",
     tags: ["Web"],
     category: "upcoming",
+    level: "Advanced",
   },
   {
     id: 4,
@@ -50,5 +53,6 @@ export const defaultProjects = [
     github_url: "https://github.com/Clawzd/sqlProject",
     tags: ["Web", "Mobile"],
     category: "upcoming",
+    level: "Intermediate",
   },
 ];

@@ -18,6 +18,7 @@ export default function Projects() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState("all");
   const [sortBy, setSortBy] = useState("date-desc");
   const [projects, setProjects] = useState([]);
 
@@ -48,6 +49,10 @@ export default function Projects() {
         if (selectedTags.length === 0) return true;
         return selectedTags.some((t) => (p.tags || []).includes(t));
       })
+      .filter((p) => {
+        if (selectedLevel === "all") return true;
+        return (p.level || "").toLowerCase() === selectedLevel.toLowerCase();
+      })
       .slice();
 
     list.sort((a, b) => {
@@ -61,7 +66,7 @@ export default function Projects() {
     });
 
     return list;
-  }, [projects, category, searchQuery, selectedTags, sortBy]);
+  }, [projects, category, searchQuery, selectedTags, selectedLevel, sortBy]);
 
   const toggleTag = (tag) =>
     setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]));
@@ -90,7 +95,7 @@ export default function Projects() {
             isDark ? "bg-gray-900/50 border-purple-900/30" : "bg-white border-purple-200/50"
           }`}
         >
-          <div className="grid md:grid-cols-2 gap-4 mb-4">
+          <div className="grid md:grid-cols-3 gap-4 mb-4">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -103,6 +108,34 @@ export default function Projects() {
                   isDark ? "bg-black/50 border-purple-500/30 text-white" : "bg-gray-50 border-purple-300 text-gray-900"
                 }`}
               />
+            </div>
+
+            {/* Level filter */}
+            <div>
+              <div
+                className={`flex items-center justify-between rounded-md px-3 py-2 border ${
+                  isDark ? "bg-black/50 border-purple-500/30" : "bg-gray-50 border-purple-300"
+                }`}
+              >
+                <label className={`${isDark ? "text-gray-300" : "text-gray-700"} mr-2`} htmlFor="level">
+                  Level
+                </label>
+                <select
+                  id="level"
+                  value={selectedLevel}
+                  onChange={(e) => setSelectedLevel(e.target.value)}
+                  className={`outline-none rounded-md px-2 py-1 ${
+                    isDark
+                        ? "bg-gray-800 text-white border border-purple-600 focus:ring-2 focus:ring-purple-400"
+                        : "bg-gray-50 text-gray-900 border border-purple-300 focus:ring-2 focus:ring-purple-300"
+                    }`}
+                >
+                  <option value="all">All Levels</option>
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </div>
             </div>
 
             {/* Sort by (native select) */}
@@ -186,6 +219,7 @@ export default function Projects() {
               onClick={() => {
                 setSearchQuery("");
                 setSelectedTags([]);
+                setSelectedLevel("all");
                 setSortBy("date-desc");
               }}
               className={`px-4 py-2 rounded-md border ${

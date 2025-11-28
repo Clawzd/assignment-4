@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Code, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Weather from "@/components/Weather";
 
 export default function Landing() {
   const [userName, setUserName] = useState("");
@@ -16,8 +17,14 @@ export default function Landing() {
     const savedTheme = localStorage.getItem("theme") || "dark";
     setTheme(savedTheme);
 
+    // Check for visitor name from contact form first, then portfolioUserName
+    const visitorName = localStorage.getItem("visitorName");
     const savedName = localStorage.getItem("portfolioUserName");
-    if (savedName) setUserName(savedName);
+    if (visitorName) {
+      setUserName(visitorName);
+    } else if (savedName) {
+      setUserName(savedName);
+    }
 
     const updateGreeting = () => {
       const hour = new Date().getHours();
@@ -28,7 +35,32 @@ export default function Landing() {
 
     updateGreeting();
     const interval = setInterval(updateGreeting, 60000);
-    return () => clearInterval(interval);
+    
+    // Listen for visitor name updates
+    const handleVisitorNameUpdate = (e) => {
+      const newName = e?.detail || localStorage.getItem("visitorName");
+      if (newName) {
+        setUserName(newName);
+      }
+    };
+    
+    const handleStorageChange = () => {
+      const newVisitorName = localStorage.getItem("visitorName");
+      if (newVisitorName) {
+        setUserName(newVisitorName);
+      }
+    };
+    
+    // Listen for custom event (same-tab updates)
+    window.addEventListener("visitorNameUpdated", handleVisitorNameUpdate);
+    // Listen for storage event (cross-tab updates)
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("visitorNameUpdated", handleVisitorNameUpdate);
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   const handleSaveName = () => {
@@ -56,8 +88,7 @@ export default function Landing() {
           <div className="flex items-center justify-center gap-2 mb-2">
             <Sparkles className="w-5 h-5 text-purple-400 animate-pulse" />
             <p className={`text-lg ${isDark ? "text-gray-300" : "text-gray-600"}`}>
-              {greeting}
-              {userName ? `, ${userName}` : ""}!
+              {userName ? `Welcome back, ${userName}!` : `${greeting}!`}
             </p>
           </div>
 
@@ -111,6 +142,7 @@ export default function Landing() {
             src="src/assets/fovicone1.png"
             alt="Profile"
             className="w-56 h-56 rounded-full object-cover"
+            loading="lazy"
           />
           <div
             className="absolute inset-0 border-2 border-transparent border-t-purple-400 rounded-full animate-spin"
@@ -187,6 +219,8 @@ export default function Landing() {
         </Link>
         </motion.div>
 
+        {/* Weather Section */}
+        <Weather />
 
         {/* Animated decorative bars */}
         <div className="flex justify-center mt-20 space-x-4">
