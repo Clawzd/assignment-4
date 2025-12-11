@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles, Code, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Weather from "@/components/Weather";
+import profileImage from "@/assets/fovicone1.png";
 
 export default function Landing() {
   const [userName, setUserName] = useState("");
@@ -139,7 +140,7 @@ export default function Landing() {
           }`}
         >
           <img
-            src="src/assets/fovicone1.png"
+            src={profileImage}
             alt="Profile"
             className="w-56 h-56 rounded-full object-cover"
             loading="lazy"
