@@ -1,4 +1,4 @@
-# Personal Portfolio — Assignment 3
+# Personal Portfolio — Assignment 4
 
 A modern developer portfolio built with Vite + React + Tailwind v4, featuring advanced API integrations, state management, and performance optimizations.
 
